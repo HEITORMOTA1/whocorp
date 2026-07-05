@@ -28,6 +28,7 @@ O projeto consome uma API REST para exibir dados atualizados da empresa, oferece
 * Fetch API
 * JSON
 * REST API
+* Brasil API
 
 ---
 
