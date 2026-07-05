@@ -70,6 +70,6 @@ Durante o desenvolvimento deste projeto foram aplicados conceitos de:
 
 ## 👨‍💻 Desenvolvido por
 
-**Heitor Augusto Mota dos Santos**
+**Heitor Augusto Mota dos Santos e Estevão Augusto Mota Dos Santos**
 
 Sempre em busca de aprender, criar soluções úteis e evoluir como desenvolvedor.
