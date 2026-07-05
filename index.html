@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="fef5b096d7a736a63c36bdfd1b7116a950e78674" content="fef5b096d7a736a63c36bdfd1b7116a950e78674" />
+<title>Who Corp — Consulta de CNPJ</title>
+<link rel="icon" href="assets/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Who Corp" class="brand-logo">
+    </div>
+    <nav class="topnav">
+      <span>Base: Receita Federal</span>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero wrap">
+    <p class="eyebrow">Consulta de CNPJ</p>
+    <h1 class="hero-title">Quem está por trás deste <span>CNPJ</span>?</h1>
+    <p class="hero-sub">Digite um CNPJ e veja razão social, sócios, endereço, atividade e situação cadastral — direto da base da Receita Federal.</p>
+
+    <form id="search-form" class="search-box" autocomplete="off">
+      <span class="search-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      <input
+        id="cnpj-input"
+        type="text"
+        inputmode="numeric"
+        placeholder="00.000.000/0000-00"
+        maxlength="18"
+        aria-label="Número do CNPJ"
+      >
+      <button type="submit" id="search-btn">
+        <span class="btn-label">Consultar</span>
+      </button>
+    </form>
+    <p id="form-hint" class="form-hint"></p>
+  </section>
+
+ 
+  <section id="status-area" class="wrap status-area" hidden>
+
+    <div id="loading-state" class="loading-state" hidden>
+      <div class="scan-line"></div>
+      <p id="loading-text" class="loading-text">investigando processo…</p>
+      <div class="loading-bars">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div id="error-state" class="error-state" hidden>
+      <h3 id="error-title">Nada encontrado</h3>
+      <p id="error-text">Não localizamos registros para este CNPJ.</p>
+    </div>
+
+  </section>
+
+  <section id="dossier" class="wrap dossier" hidden>
+
+    <article class="case-header">
+      <div class="case-header-top">
+        <span class="case-id"><span id="d-cnpj-tag"></span></span>
+        <span id="d-status-stamp" class="stamp">STATUS</span>
+      </div>
+      <h2 id="d-razao" class="case-title">—</h2>
+      <p class="case-fantasia">Nome fantasia: <strong id="d-fantasia">—</strong></p>
+
+      <div class="case-header-actions">
+        <button id="copy-cnpj-btn" class="ghost-btn" type="button">Copiar CNPJ</button>
+        <button id="print-btn" class="ghost-btn" type="button">Exportar dossiê (PDF)</button>
+        <button id="new-search-btn" class="ghost-btn" type="button">Nova consulta</button>
+      </div>
+    </article>
+
+    <div class="grid">
+
+      <article class="card">
+        <h3 class="card-title">Identificação</h3>
+        <dl class="fact-list">
+          <div><dt>CNPJ</dt><dd id="f-cnpj">—</dd></div>
+          <div><dt>Tipo</dt><dd id="f-matriz">—</dd></div>
+          <div><dt>Natureza jurídica</dt><dd id="f-natureza">—</dd></div>
+          <div><dt>Porte</dt><dd id="f-porte">—</dd></div>
+          <div><dt>Data de abertura</dt><dd id="f-abertura">—</dd></div>
+          <div><dt>Tempo de atividade</dt><dd id="f-idade">—</dd></div>
+        </dl>
+      </article>
+
+      <article class="card">
+        <h3 class="card-title">Situação cadastral</h3>
+        <dl class="fact-list">
+          <div><dt>Situação</dt><dd id="f-situacao">—</dd></div>
+          <div><dt>Desde</dt><dd id="f-situacao-data">—</dd></div>
+          <div><dt>Motivo</dt><dd id="f-motivo">—</dd></div>
+          <div><dt>Simples Nacional</dt><dd id="f-simples">—</dd></div>
+          <div><dt>MEI</dt><dd id="f-mei">—</dd></div>
+        </dl>
+      </article>
+
+      <article class="card">
+        <h3 class="card-title">Capital &amp; regime</h3>
+        <dl class="fact-list">
+          <div><dt>Capital social</dt><dd id="f-capital">—</dd></div>
+          <div><dt>Porte declarado</dt><dd id="f-porte2">—</dd></div>
+          <div><dt>Responsável (qualificação)</dt><dd id="f-resp">—</dd></div>
+        </dl>
+      </article>
+
+      <article class="card card-wide">
+        <h3 class="card-title">Atividade econômica</h3>
+        <div class="cnae-main">
+          <span class="cnae-code" id="f-cnae-cod">0000-0/00</span>
+          <span id="f-cnae-desc">—</span>
+        </div>
+        <h4 class="sub-title">Atividades secundárias</h4>
+        <ul id="f-cnae-sec" class="cnae-list">
+          <li class="empty">Nenhuma atividade secundária registrada.</li>
+        </ul>
+      </article>
+
+      <article class="card card-wide">
+        <h3 class="card-title">Endereço</h3>
+        <p id="f-endereco" class="address-line">—</p>
+        <dl class="fact-list two-col">
+          <div><dt>Bairro</dt><dd id="f-bairro">—</dd></div>
+          <div><dt>Município / UF</dt><dd id="f-municipio">—</dd></div>
+          <div><dt>CEP</dt><dd id="f-cep">—</dd></div>
+        </dl>
+      </article>
+
+      <article class="card">
+        <h3 class="card-title">Contato</h3>
+        <dl class="fact-list">
+          <div><dt>Telefone 1</dt><dd id="f-tel1">—</dd></div>
+          <div><dt>Telefone 2</dt><dd id="f-tel2">—</dd></div>
+          <div><dt>Fax</dt><dd id="f-fax">—</dd></div>
+        </dl>
+      </article>
+
+    </div>
+
+    <article class="qsa-section">
+      <div class="qsa-heading">
+        <h3 class="card-title">Quem faz parte — Quadro de Sócios e Administradores</h3>
+        <span id="qsa-count" class="qsa-count">0 pessoas</span>
+      </div>
+      <div id="qsa-grid" class="qsa-grid"></div>
+    </article>
+
+  </section>
+
+
+
+<footer class="site-footer"> <div class="wrap footer-inner"> <img src="assets/logo.png" alt="Who Corp" class="footer-logo"> <p>Dados públicos consultados via BrasilAPI / Receita Federal. Who Corp não armazena os CNPJs pesquisados.</p> </div> </footer>
+
+
+
+<script src="script.js"></script>
+</body>
+</html>
